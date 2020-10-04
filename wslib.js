@@ -1,7 +1,8 @@
-const WebSocket = require("ws");
 
+const { string } = require("joi");
+const WebSocket = require("ws");
+var [ getMessages, postMessage ] = require("./public/controllers/messages");
 const clients = [];
-const messages = [];
 
 const wsConnection = (server) => {
   const wss = new WebSocket.Server({ server });
@@ -10,15 +11,23 @@ const wsConnection = (server) => {
     clients.push(ws);
     sendMessages();
 
-    ws.on("message", (message) => {
-      messages.push(message);
+    ws.on("message", async function (message) {
+      message = JSON.parse(message);
+      message["ts"] = new Date().getTime();
+      let x = await postMessage(message);
       sendMessages();
     });
   });
+};
 
-  const sendMessages = () => {
-    clients.forEach((client) => client.send(JSON.stringify(messages)));
-  };
+const sendMessages = () => {
+  clients.forEach((client) => {
+    getMessages().then((result) => {
+      messages = JSON.stringify(result);
+      client.send(messages);
+    });
+  });
 };
 
 exports.wsConnection = wsConnection;
+exports.sendMessages = sendMessages;
