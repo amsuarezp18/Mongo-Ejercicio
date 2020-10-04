@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
 var [ getMessages, getMessage, postMessage, putMessage, deleteMessage] = require("../public/controllers/messages");
-var messageLogic = require("../public/logic/messageLogic");
 const ws = require("../wslib");
 
 /* GET product listing. */

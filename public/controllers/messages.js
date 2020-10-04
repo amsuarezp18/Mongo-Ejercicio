@@ -1,4 +1,4 @@
-const mdbconn = require('../lib/utils/mongo.js');
+const mdbconn = require('../../lib/utils/mongo.js');
 
 function getMessages() {
     return mdbconn.conn().then((client) => {
