@@ -10,7 +10,7 @@ router.get("/api/messages", async function (req, res, next) {
     res.send(messages);
 });
 
-/* POST a chat message. */
+/* POST a message. */
 router.post("/api/messages", async function (req, res, next) {
     req.body["ts"] = new Date().getTime();
     const newMessage = await postMessage(req.body);
@@ -26,7 +26,7 @@ router.get("/api/messages/:ts", async function (req, res, next) {
   } else return res.send(message);
 });
 
-/* PUT a chat message with especific ts. */
+/* PUT a message with especific ts. */
 router.put("/api/messages", async function (req, res, next) {
   const message = await getMessage(req.body.ts);
   if (message === null) {
